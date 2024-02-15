@@ -1,4 +1,4 @@
-import { Entity, Enum, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { randomUUID } from 'crypto';
 
 @Entity({ tableName: 'users' })
@@ -21,11 +21,8 @@ export class User {
   @Property({ type: 'integer', nullable: false, unique: true })
   contact: string;
 
-  @Enum(() => UserType)
-  type: UserType = UserType.USER;
+  @Property({ type: 'string' })
+  role: UserRole = 'USER';
 }
 
-export enum UserType {
-  ADMIN,
-  USER,
-}
+export type UserRole = 'SUPERADMIN' | 'ADMIN' | 'USER';

@@ -10,3 +10,5 @@ init()
     );
   })
   .catch(console.error);
+
+// Todo: Exception handling

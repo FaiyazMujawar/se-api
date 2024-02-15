@@ -9,6 +9,7 @@ import { LoginRequest } from '../types/app';
 const router = Router();
 
 router.post('/register', async (req, res, next) => {
+  // TODO: Email & mobile number verification
   try {
     const repository = Database.getRepository(User);
     const user = repository.create(req.body) as User;

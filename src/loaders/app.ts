@@ -1,31 +1,22 @@
 import Express from 'express';
 import AuthRoutes from '../controllers/auth';
+import ServicesRoutes from '../controllers/service';
+import { exceptionHandler } from '../exceptions/exception_handler';
 
 export function initApp() {
   const app = Express();
   app.use(Express.json());
   app.use(Express.urlencoded({ extended: true }));
 
-  app.get('/health', (req, res) => {
+  app.get('/health', (_, res) => {
     return res.status(200).json({
       message: 'OK',
     });
   });
 
   app.use('/auth', AuthRoutes);
+  app.use('/services', ServicesRoutes);
 
-  app.use((error, _, res, next) => {
-    if (error != undefined) {
-      if (error.code == '23505') {
-        return res.status(400).json({
-          message: error.detail,
-        });
-      }
-      return res.status(500).json({
-        message: error.message,
-      });
-    }
-    next();
-  });
+  app.use(exceptionHandler);
   return app;
 }
