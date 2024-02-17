@@ -11,7 +11,7 @@ export class Answer {
   @Property({ type: 'text', nullable: false })
   answer: string;
 
-  @Property({ type: 'text' })
+  @Property({ type: 'text', nullable: true })
   filepath: string;
 
   @ManyToOne({

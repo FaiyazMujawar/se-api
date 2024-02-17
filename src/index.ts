@@ -1,6 +1,4 @@
-import { config } from 'dotenv';
 import { init } from './loaders';
-config();
 
 init()
   .then((app) => {
@@ -10,5 +8,3 @@ init()
     );
   })
   .catch(console.error);
-
-// Todo: Exception handling

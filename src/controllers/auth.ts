@@ -7,14 +7,15 @@ import { decode, sign, verify } from '../services/jwt';
 import { LoginRequest } from '../types/app';
 
 const router = Router();
+const { getEm } = Database;
 
 router.post('/register', async (req, res, next) => {
   // TODO: Email & mobile number verification
   try {
-    const repository = Database.getRepository(User);
-    const user = repository.create(req.body) as User;
+    const em = await getEm();
+    const user = em.create(User, req.body) as User;
     user.password = hashSync(user.password, 10);
-    await (await Database.getEm()).persistAndFlush(user);
+    await em.persistAndFlush(user);
     return res.status(201).json(user);
   } catch (error) {
     next(error);
@@ -24,9 +25,8 @@ router.post('/register', async (req, res, next) => {
 router.post('/login', async (req, res, next) => {
   try {
     const { email, password } = req.body as LoginRequest;
-    const user = (await Database.getRepository(User).findOneOrFail({
-      email,
-    })) as User;
+    const em = await getEm();
+    const user = (await em.findOneOrFail(User, { email })) as User;
 
     if (!compareSync(password, user.password)) {
       throw new Error('Password incorrect');
@@ -42,8 +42,9 @@ router.post('/refresh', async (req, res, next) => {
   if (!verify(refreshToken)) {
     throw new Error('Invalid token');
   }
+  const em = await getEm();
   const { uid } = decode(refreshToken) as JwtPayload;
-  const user = (await Database.getRepository(User).findOneOrFail({
+  const user = (await em.findOneOrFail(User, {
     id: uid,
   })) as User;
   return res.status(200).json(toTokens(user));

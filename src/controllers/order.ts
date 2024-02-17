@@ -27,7 +27,7 @@ router.post(
   hasAnyRole('ADMIN', 'SUPERADMIN'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const order = await createOrder(req.body, req.user);
+      const order = await createOrder(req);
       return res.status(201).json(order);
     } catch (error) {
       next(error);
