@@ -12,7 +12,7 @@ export function exceptionHandler(
   console.log(error);
 
   let status = 500;
-  let message = 'Something went wrong';
+  let message = error.message;
 
   if (error.code == '23505') {
     status = 400;

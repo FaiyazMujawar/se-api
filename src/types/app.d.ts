@@ -10,3 +10,8 @@ export type LoginRequest = {
   email: string;
   password: string;
 };
+
+export type CreateOrderRequest = {
+  serviceId: string;
+  [questionId: string]: string;
+};

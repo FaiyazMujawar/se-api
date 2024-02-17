@@ -1,5 +1,12 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  OneToMany,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core';
 import { randomUUID } from 'crypto';
+import { Order } from './order';
 
 @Entity({ tableName: 'users' })
 export class User {
@@ -23,6 +30,9 @@ export class User {
 
   @Property({ type: 'string' })
   role: UserRole = 'USER';
+
+  @OneToMany(() => Order, (order) => order.createdBy, { lazy: true })
+  orders = new Collection<Order>(this);
 }
 
 export type UserRole = 'SUPERADMIN' | 'ADMIN' | 'USER';

@@ -1,5 +1,6 @@
 import Express from 'express';
 import AuthRoutes from '../controllers/auth';
+import OrderRoutes from '../controllers/order';
 import ServicesRoutes from '../controllers/service';
 import { exceptionHandler } from '../exceptions/exception_handler';
 
@@ -16,6 +17,7 @@ export function initApp() {
 
   app.use('/auth', AuthRoutes);
   app.use('/services', ServicesRoutes);
+  app.use('/orders', OrderRoutes);
 
   app.use(exceptionHandler);
   return app;

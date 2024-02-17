@@ -14,5 +14,9 @@ export function decode(token: string) {
 }
 
 export function verify(token: string) {
-  return jwt.verify(token, process.env.SECRET) != undefined;
+  try {
+    return jwt.verify(token, process.env.SECRET) != undefined;
+  } catch (error) {
+    return false;
+  }
 }
